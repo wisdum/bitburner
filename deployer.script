@@ -1,0 +1,19 @@
+var servers = args[0];
+var scripts = "joes-adv.script";
+var ramscript = getScriptRam(scripts);
+
+servers.forEach(eachServer);
+print("script being run: " + scripts);
+print("RAM required per thread: "+ ramscript);
+function eachServer(value) {
+	print("Server: " + value);
+	scp(scripts, value);
+	var serverram = getServerRam(value);
+	var totalRam = parseInt(serverram[0]);
+	if(totalRam >= 1) {
+		var threads = parseInt(totalRam / ramscript);
+		print("Server RAM: " + totalRam);
+		print("Threads to use: " + threads);
+		exec(scripts, value, threads);
+	}
+}
