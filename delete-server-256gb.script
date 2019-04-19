@@ -1,0 +1,8 @@
+var i = 8;
+for (i = 8;i < 24;){
+        killall("pserv256-" + i);
+        sleep(6000);
+        deleteServer("pserv256-" + i);
+        sleep(3000);
+        i++;
+}

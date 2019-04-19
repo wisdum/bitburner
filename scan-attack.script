@@ -1,0 +1,100 @@
+var servers = scan("home", [hostnames=true]);
+var toolval = 0;
+var files = ls("home");
+files.forEach(matcher);
+servers.forEach(hack);
+
+function hack(i){
+    var findRoot = hasRootAccess(i);
+    tprint("Server: " + i);
+    tprint("hasRoot: " + findRoot);
+    
+    if (findRoot === false){
+        var myhackLvl = getHackingLevel();
+        var hackLvl = getServerRequiredHackingLevel(i);
+    
+        if (myhackLvl >= hackLvl){
+            var portsReq = getServerNumPortsRequired(i);
+            
+            switch (portsReq) {
+                case 1:
+                    if (toolval >= 1) {
+                        brutessh(i);
+                        nuke(i);  
+                    }
+                    break;
+                case 2:
+                    if (toolval >= 3){
+                        brutessh(i);
+                        ftpcrack(i);
+                        nuke(i);
+                    }
+                    
+                    break;
+                case 3:
+                    if (toolval >= 7) {
+                        brutessh(i);
+                        ftpcrack(i);
+                        relaysmtp(i);
+                        nuke(i);
+                    }
+                    
+                    break;
+                case 4:
+                    if (toolval >=15) {
+                        brutessh(i);
+                        ftpcrack(i);
+                        relaysmtp(i);
+                        httpworm(i);
+                        nuke(i);                    
+                    }
+                    
+                    break;
+                case 5:
+                    if (toolval >=16) {
+                        brutessh(i);
+                        ftpcrack(i);
+                        relaysmtp(i);
+                        httpworm(i);
+                        sqlinject(i);
+                        nuke(i);                    
+                    }
+                    
+                    break;
+                default:
+                    nuke(i);
+                
+                    break;
+            }
+        }
+    
+    }
+
+}
+
+
+function matcher(matches) {	
+		
+	switch(matches) {
+		  case "BruteSSH.exe":
+			toolval += 1;
+			tprint("Found BruteSSH.exe!");
+			break;
+		  case "FTPCrack.exe":
+			toolval += 2;
+			tprint("Found FTPCrack.exe!");
+			break;
+		  case "relaySMTP.exe":
+			toolval += 4;	
+			tprint("Found relaySMTP.exe!");
+			break;
+		  case "HTTPWorm.exe":
+			toolval += 8;		  
+			tprint("Found HTTPWorm.exe!");
+			break;
+		  case "SQLInject.exe":
+			toolval += 16; 	  
+			tprint("Found SQLInject.exe!");
+			break;
+    }
+}
