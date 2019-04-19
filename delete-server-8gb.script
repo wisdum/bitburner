@@ -1,0 +1,12 @@
+for (i = 0;i < 26;i++){
+    var servername = "pserv8-" + i;
+    if(serverExists(servername) === true) {
+        tprint("Deleting server: " + servername);
+        killall(servername);
+        sleep(3000);
+        deleteServer(servername);
+    }
+    else {
+        tprint("Server " + servername + " doesn't exist");  
+    }
+}

@@ -1,0 +1,10 @@
+var ram = 8;
+var i = 0;
+while (i < getPurchasedServerLimit()) {
+    if (getServerMoneyAvailable("home") > getPurchasedServerCost(ram)) {
+        var hostname = purchaseServer("pserv8-" + i, ram);
+        scp("joes-adv.script", hostname);
+        exec("joes-adv.script", hostname, 3);
+        ++i;
+    }
+}
