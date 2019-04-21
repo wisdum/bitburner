@@ -1,0 +1,72 @@
+var hacks = args[0];
+var deploys = args[1];
+
+var myhackLvl = getHackingLevel();
+var hackLvl = getServerRequiredHackingLevel(hacks);
+tprint(hacks);
+tprint(hackLvl);
+if (myhackLvl >= hackLvl){
+    var portsReq = getServerNumPortsRequired(hacks);
+    
+    switch (portsReq) {
+        case 1:
+            if (toolval >= 1) {
+                brutessh(hacks);
+                nuke(hacks);  
+            }
+            break;
+        case 2:
+            if (toolval >= 3){
+                brutessh(hacks);
+                ftpcrack(hacks);
+                nuke(hacks);
+            }
+            
+            break;
+        case 3:
+            if (toolval >= 7) {
+                brutessh(hacks);
+                ftpcrack(hacks);
+                relaysmtp(hacks);
+                nuke(hacks);
+            }
+            
+            break;
+        case 4:
+            if (toolval >=15) {
+                brutessh(hacks);
+                ftpcrack(hacks);
+                relaysmtp(hacks);
+                httpworm(hacks);
+                nuke(hacks);                    
+            }
+            
+            break;
+        case 5:
+            if (toolval >=16) {
+                brutessh(hacks);
+                ftpcrack(hacks);
+                relaysmtp(hacks);
+                httpworm(hacks);
+                sqlinject(hacks);
+                nuke(hacks);                    
+            }
+            
+            break;
+        default:
+            nuke(hacks);
+        
+            break;
+    }
+}
+
+//scp(hacks,"home",deploys);
+sleep(3000);
+var serverram = getServerRam(hacks);
+var totalRam = parseInt(serverram[0]);
+if(totalRam >= 1) {
+	var threads = parseInt(totalRam / ramscript);
+	print("Server RAM: " + totalRam);
+	print("Threads to use: " + threads);
+	exec(deploys, hacks, threads);
+}
