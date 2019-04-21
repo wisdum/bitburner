@@ -1,0 +1,60 @@
+var hacks = args[0];
+var deploys = "autohacker.script";
+var myhackLvl = getHackingLevel();
+var hackLvl = getServerRequiredHackingLevel(hacks);
+var ramscript = getScriptRam(deploys);
+var serverram = getServerRam(hacks);
+
+var totalRam = parseInt(serverram[0]);
+tprint(hacks);
+tprint(hackLvl);
+var threads = parseInt(totalRam / ramscript);
+tprint("Server RAM: " + totalRam);
+tprint("Threads to use: " + threads);
+tprint("RAM Required: " + ramscript);
+tprint("Target RAM: " + totalRam);
+if (myhackLvl >= hackLvl){
+    var portsReq = getServerNumPortsRequired(hacks);
+    switch (portsReq) {
+        case 1:
+            brutessh(hacks);
+            nuke(hacks);  
+            break;
+        case 2:
+            brutessh(hacks);
+            ftpcrack(hacks);
+            nuke(hacks);
+            break;
+        case 3:
+            brutessh(hacks);
+            ftpcrack(hacks);
+            relaysmtp(hacks);
+            nuke(hacks);
+            break;
+        case 4:
+            brutessh(hacks);
+            ftpcrack(hacks);
+            relaysmtp(hacks);
+            httpworm(hacks);
+            nuke(hacks);
+            break;
+        case 5:
+            brutessh(hacks);
+            ftpcrack(hacks);
+            relaysmtp(hacks);
+            httpworm(hacks);
+            sqlinject(hacks);
+            nuke(hacks);                    
+            break;
+        default:
+            nuke(hacks);
+            break;
+    }
+}
+scp(deploys,"home", hacks);
+sleep(3000);
+tprint("deploys " + deploys);
+tprint("hacks " + hacks);
+tprint("threads " + threads);
+tprint("hacks arg " + hacks)
+exec(deploys, hacks, threads, hacks);
