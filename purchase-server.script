@@ -1,0 +1,18 @@
+var ram = args[0];
+var runners = args[1];
+var ramscript = getScriptRam(runners);
+var threads = parseInt(ram / ramscript);
+var servername = runners.replace('.script','');
+
+var i = 0;
+while (i < getPurchasedServerLimit()) {  
+    if (getServerMoneyAvailable("home") > getPurchasedServerCost(ram)) {
+        var hostname = servername + "-" + ram + "GB" + "-" + i; 
+        tprint(hostname);
+        purchaseServer(hostname, ram);
+        sleep(3000);
+        scp(runners, hostname);
+        exec(runners, hostname, threads);
+        ++i;
+    }
+}
